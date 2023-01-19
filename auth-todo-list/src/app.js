@@ -2,10 +2,13 @@
 // sequelize.sync({force:true})
 
 const express = require('express')
-
+require('dotenv').config()
 const authRoute = require('./routes/authRoute')
+const todoRoute = require('./routes/todoRoute')
 const notFoundMiddleware = require('./middlewares/notFound')
 const errMiddleware = require('./middlewares/error')
+const authenticationMiddleware = require('./middlewares/authenticate')
+
 const app = express()
 
 //body parser middleware
@@ -13,6 +16,7 @@ app.use(express.json())
 
 //auth router middleware
 app.use('/auth',authRoute)
+app.use('/todos',authenticationMiddleware,todoRoute)
 
 app.use((req,res,next)=>{
     next(new Error('test error middleware'))
@@ -24,4 +28,5 @@ app.use(notFoundMiddleware)
 //500 error handling middleware
 app.use(errMiddleware)
 
-app.listen(8013,()=>console.log('server running on port 8013'))
+const port = process.env.PORT || 8000;
+app.listen(8013,()=>console.log('server running on port '+ port))
