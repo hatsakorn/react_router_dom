@@ -8,8 +8,12 @@ const todoRoute = require('./routes/todoRoute')
 const notFoundMiddleware = require('./middlewares/notFound')
 const errMiddleware = require('./middlewares/error')
 const authenticationMiddleware = require('./middlewares/authenticate')
+const cors = require('cors')
 
 const app = express()
+
+//cors middleware set response header to allow cross origin
+app.use(cors())
 
 //body parser middleware
 app.use(express.json())
